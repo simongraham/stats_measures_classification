@@ -1,30 +1,43 @@
-function [acc] =  Accuracy(ground_truth, prediction)
+function [score] = quadraticWeightedKappa(ground_truth, predicted, minRating, maxRating)
 
 % Author: Simon Graham
 % Tissue Image Analytics Lab
 % Department of Computer Science, 
 % University of Warwick, UK.
 %-------------------------------------------------------------------
-% Both prediction and ground_truth 
-% should conatain 1-Channel 
-% Hint: use im2bw(img) to convert image to single channel
-%------------------------------------------------------------------
 
-% Check if images contain single channel
-if ~islogical(ground_truth)
-    error('Image must be in logical format');
-end
-if ~islogical(prediction)
-    error('Image must be in logical format');
+csv_file = [ground_truth(:) predicted(:)];
+
+% Check if csv file has only two columns
+if size(csv_file,2) > 2
+    error('csv file must only have two columns: ground truth and prediction');
 end
 
- number_pixels = size(ground_truth,1) * size(ground_truth,2);
- 
- true_positive = (prediction & ground_truth);
- true_negative = (~prediction & ~ground_truth);
- combined = (true_positive + true_negative);
- 
- number_correct = sum(combined(:));
- acc = number_correct / number_pixels;
- 
+if nargin==3
+    M = confusionMatrix(csv_file, minRating, maxRating);
+else
+    M = confusionMatrix(csv_file);
 end
+[dx,dy] = meshgrid(1:size(M,1),1:size(M,2));
+d = (dx-dy).^2 / range(dx(:)).^2;
+E = sum(M,2)*sum(M,1);E = E / sum(M(:));
+score = 1 -(sum(d(:).*M(:))/sum(M(:))) / (sum(d(:).*E(:))/sum(E(:)));
+
+
+function M = confusionMatrix(X, minRating, maxRating)
+%CONFUSIONMATRIX   Calculates the confusion matrix between two raters
+
+if nargin==3
+    u = minRating:maxRating;
+else
+    u = min(X(:)):max(X(:));
+end
+nU = length(u);
+M = zeros(nU);
+
+for i=1:nU
+    for j=1:nU
+        M(i,j) = sum( (X(:,1)==u(i)) + (X(:,2)==u(j)) == 2);
+    end
+end
+
