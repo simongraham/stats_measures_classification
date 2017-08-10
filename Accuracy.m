@@ -1,4 +1,4 @@
-function [acc] =  Accuracy(ground_truth, prediction)
+function [acc] =  Accuracy(csv_file)
 
 % Author: Simon Graham
 % Tissue Image Analytics Lab
@@ -11,20 +11,15 @@ function [acc] =  Accuracy(ground_truth, prediction)
 %------------------------------------------------------------------
 
 % Check if images contain single channel
-if ~islogical(ground_truth)
-    error('Image must be in logical format');
-end
-if ~islogical(prediction)
-    error('Image must be in logical format');
-end
-
- number_pixels = size(ground_truth,1) * size(ground_truth,2);
- 
- true_positive = (prediction & ground_truth);
- true_negative = (~prediction & ~ground_truth);
- combined = (true_positive + true_negative);
- 
- number_correct = sum(combined(:));
- acc = number_correct / number_pixels;
- 
+if size(csv_file,2) > 2
+    error('csv file must only have two columns: ground truth and prediction');
+else
+    number_correct = 0;
+    for i = 1:size(csv_file,1)
+        if csv_file(i,1) == csv_file(i,2)
+            number_correct = number_correct + 1;
+        end
+    end
+    
+    acc = number_correct / size(csv_file,1);
 end
