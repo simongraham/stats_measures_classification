@@ -10,7 +10,7 @@ function [acc] =  Accuracy(csv_file)
 % Hint: use im2bw(img) to convert image to single channel
 %------------------------------------------------------------------
 
-% Check if images contain single channel
+% Check if csv file has only two columns
 if size(csv_file,2) > 2
     error('csv file must only have two columns: ground truth and prediction');
 else
