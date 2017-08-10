@@ -5,10 +5,6 @@ function [acc] =  Accuracy(csv_file)
 % Department of Computer Science, 
 % University of Warwick, UK.
 %-------------------------------------------------------------------
-% Both prediction and ground_truth 
-% should conatain 1-Channel 
-% Hint: use im2bw(img) to convert image to single channel
-%------------------------------------------------------------------
 
 % Check if csv file has only two columns
 if size(csv_file,2) > 2
