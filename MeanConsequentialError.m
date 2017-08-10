@@ -1,30 +1,22 @@
-function [acc] =  Accuracy(ground_truth, prediction)
+function [MCE] =  MeanConsequentialError(csv_file)
 
 % Author: Simon Graham
 % Tissue Image Analytics Lab
 % Department of Computer Science, 
 % University of Warwick, UK.
 %-------------------------------------------------------------------
-% Both prediction and ground_truth 
-% should conatain 1-Channel 
-% Hint: use im2bw(img) to convert image to single channel
-%------------------------------------------------------------------
 
-% Check if images contain single channel
-if ~islogical(ground_truth)
-    error('Image must be in logical format');
-end
-if ~islogical(prediction)
-    error('Image must be in logical format');
+% Check if csv file has only two columns
+if size(csv_file,2) > 2
+    error('csv file must only have two columns: ground truth and prediction');
+else
+    number_incorrect = 0;
+    for i = 1:size(csv_file,1)
+        test_equal = logical(csv_file(i,2)-csv_file(i,1));
+        number_incorrect = number_incorrect + test_equal;
+        end
+    end
+    
+    MCE = number_incorrect / size(csv_file,1);
 end
 
- number_pixels = size(ground_truth,1) * size(ground_truth,2);
- 
- true_positive = (prediction & ground_truth);
- true_negative = (~prediction & ~ground_truth);
- combined = (true_positive + true_negative);
- 
- number_correct = sum(combined(:));
- acc = number_correct / number_pixels;
- 
-end
