@@ -23,9 +23,6 @@ stats_measure = 'quad_weighted_kappa';
 if strcmp(stats_measure,'quad_weighted_kappa') == 1
     quad_kappa = 0;
     stats = {quad_kappa};
-elseif strcmp(stats_measure,'hamming_loss') == 1
-    hamming = 0;
-    stats = {hamming};
 elseif strcmp(stats_measure,'accuracy') == 1
     acc = 0;
     stats = {acc};
@@ -46,9 +43,6 @@ disp( sprintf( 'Processing File: %s', csv_name{1}));
 if strcmp(stats_measure,'quad_weighted_kappa') == 1
     quad_kappa = QuadraticWeightedKappa(csv_file(:,1),csv_file(:,2),0,1);
     stats = {quad_kappa};
-elseif strcmp(stats_measure,'hamming_loss') == 1
-    hamming_ = HammingLoss(csv_file);
-    stats{1} = hamming_ + stats{1};
 elseif strcmp(stats_measure,'accuracy') == 1
     acc_ = Accuracy(csv_file);
     stats{1} = acc_ + stats{1};
