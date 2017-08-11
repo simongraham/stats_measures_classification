@@ -29,9 +29,6 @@ elseif strcmp(stats_measure,'accuracy') == 1
 elseif strcmp(stats_measure,'mean_consequential_error') == 1
     mce = 0;
     stats = {mce};
-elseif strcmp(stats_measure,'log_loss') == 1
-    log_loss = 0;
-    stats = {log_loss};
 elseif strcmp(stats_measure,'matthews_correlation_coeff') == 1
     mcc = 0;
     stats = {mcc};
@@ -49,9 +46,6 @@ elseif strcmp(stats_measure,'accuracy') == 1
 elseif strcmp(stats_measure,'mean_consequential_error') == 1
     mce_ = MeanConsequentialError(csv_file);
     stats{1} = mce_ + stats{1};
-elseif strcmp(stats_measure,'log_loss') == 1
-    logloss_ = LogLoss(csv_file);
-    stats{1} = logloss_ + stats{1};
 elseif strcmp(stats_measure,'matthews_correlation_coeff') == 1
     mcc_ = MatthewsCorrelationCoefficient(csv_file);
     stats{1} = mcc_ + stats{1};
